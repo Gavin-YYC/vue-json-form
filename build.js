@@ -17,7 +17,7 @@ export default {
   plugins: [
     vue(),
     less({
-      insert: true,
+      insert: false,
       output: './build/app.css'
     }),
     babel({ exclude: 'node_modules/**' }),

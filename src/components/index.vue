@@ -15,12 +15,12 @@
     <!--工作区-->
     <div class="json-form__content">
       <!--表单工作区-->
-      <div class="json-form__form" v-show="isFormShow" :class="{'json-form__form--single': !isJSONShow}">
-        <my-form :content="myContent" @blur="handleFormBlur" ref="my-form"></my-form>
+      <div class="json-form__form" v-show="isFormShow" :class="{'json-form__form--single': !isJSONShow}" ref="my-form">
+        <my-form :content="myContent" @blur="handleFormBlur"></my-form>
       </div>
       <!--json工作区-->
       <div class="json-form__json" v-show="isJSONShow" :class="{'json-form__json--single': !isFormShow}">
-        <my-editor :content="myContent" :height="autoSetEditorHeight()" @blur="handleEditorBlur"></my-editor>
+        <my-editor :content="myContent" :height="autoSetEditorHeight" @blur="handleEditorBlur"></my-editor>
       </div>
     </div>
   </div>
@@ -45,7 +45,8 @@ export default {
         // 编辑器显示与隐藏
         isFormShow: true,
         isJSONShow: true,
-        myContent: this.content
+        myContent: this.content,
+        autoSetEditorHeight: '800px'
       }
     },
 
@@ -67,23 +68,14 @@ export default {
           this.myContent = JSON.parse( val );
           this.$emit('change', this.myContent);
         } catch (e) {
-          console.log('编辑器存在错误，请检查！')
-          // Message.error('编辑器存在错误，请检查！');
+          console.log('编辑内容存在错误，请检查！')
         }
       },
 
       // 表单失焦时更新数据
       handleFormBlur( val ) {
-        this.myContent = JSON.parse(val);
+        this.myContent = JSON.parse(JSON.stringify(val));
         this.$emit('change', this.myContent);
-      },
-
-      autoSetEditorHeight() {
-        if ( this.$refs['my-form'] ) {
-
-        } else {
-          return '800px';
-        }
       }
     }
 }
